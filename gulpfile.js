@@ -1,33 +1,42 @@
+/* 
+ * This file is property of Power2SME pvt. ltd. 
+ @author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)
+ * This file is gulp file. Changes should be done cautiously
+ */
 var gulp = require("gulp");          // Load gulp
 var uglify = require('gulp-uglify');
-var minify = require('gulp-minify');
+var minify = require('gulp-minify'); //for js
+var cssmin = require('gulp-cssmin'); //for css
+var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 
 gulp.task('minifyalljs', function () {
-    gulp.src([      
+    gulp.src([
+        'public_html/chatapp.js',
+        'public_html/filters/chatui_filters.js',
+        'public_html/directives/chatui_directives.js',
         'public_html/apiservices/chatapiservices.js',
-        'public_html/components/myaccount/wallet/controllers/wallet_dashboard_controller.js',
-        'public_html/components/myaccount/animations/myaccount_animation.js'
+        'public_html/components/chatui/chat_controller.js'
     ])
-            .pipe(concat('allCompressed_myaccount.js'))
-            .pipe(minify()
+            .pipe(concat('pics.js'))
+            .pipe(minify({
+                ext: {
+                    min: '.min.js'
+                }
+            })
                     .on('error', function (e) {
                         console.log(e);
                     })
                     )
-            .pipe(gulp.dest('public_html/minified/'));
+            .pipe(gulp.dest('dist/'));
 });
 
 
-gulp.task('minifyallcss_myaccount', function () {
-    gulp.src([ 
-        'public_html/bower_components/angular-backtop/dist/angular-backtop.css'    
+gulp.task('minifyallcss', function () {
+    gulp.src([
+        'public_html/assets/css/customchat.css'
     ])
-            .pipe(concat('allCompressed_myaccount.css'))
-            .pipe(minify()
-                    .on('error', function (e) {
-                        console.log(e);
-                    })
-                    )
-            .pipe(gulp.dest('public_html/assets/css/'));
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min', basename : 'pics'}))
+        .pipe(gulp.dest('dist'));
 });
