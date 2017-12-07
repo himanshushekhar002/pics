@@ -16,7 +16,7 @@
     "public_html/components/chatui/chat_controller.js",
     "public_html/directives/chatui_directives.js",
     "public_html/filters/chatui_filters.js",
-    "public_html/chatapp.js",        
+    "public_html/chatapp.js"        
   ],
   "keywords": [
     "pics",
