@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+This file is property of Power2SME pvt. ltd.
+@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)
+@Date :
+@FileName For Reference :
+@Purpose : 
+@Other Description :
+-->
+
+<div id="vertical-container" schroll-bottom="chatMessageList">
+    <div ng-repeat="msg in chatMessageList track by $index" class="repeated-item2" ng-init="parentIndex = $index">
+        <div class="chatmsg" ng-class="{'message-box-container-bot':msg.msgBy == 'bot' || msg.msgBy == 'human' ,'message-box-container-client':msg.msgBy == 'client'}" >
+            <img class="user-icon" ng-src="{{msg.userIconPath}}">
+                <div bind-html-compile="msg.message">
+            </div>
+            <div ng-show="msg.message == '' && true || false">
+                <div class="typing-dot" >
+                </div>
+                <div class="typing-dot1" >
+                </div>
+                <div class="typing-dot2" >
+                </div>
+            </div>
+        </div>
+        <div id="suggesstion_bar" class="suggestion-bar-container" ng-show="msg.dataListPresent" >
+            <md-virtual-repeat-container id="horizontal-container" class="horizontal-container" md-orient-horizontal>
+                <div md-virtual-repeat="item in msg.dataList"
+                     class="repeated-item" >
+                    <div class ="chip" ng-click="choose($index, parentIndex)">
+                        {{item}}
+                    </div>
+                </div>
+            </md-virtual-repeat-container>
+        </div>
+        <div class="card-container" ng-show="msg.showPrice" scroll myindex="{{$index}}" chatmessagelist="chatMessageList" sendcardrequest ="sendCardRequest(true)">
+            <div ng-repeat="item in msg.dataList" class="repeated-card-item">
+                <div class="card">
+                    <div id="card_header">
+                        <div id="subcategory">
+                            {{item.skuDetails.subcategory}}
+                        </div>
+                        <div id="brand">
+                            {{item.skuDetails.brand}}
+                        </div>
+                    </div>
+                    <div id="middle_content">
+                        <div class="row">
+                            <span>Category : </span>
+                            <span>{{item.skuDetails.category}}</span>
+                        </div>
+                        <div ng-repeat="(key, value) in item.skuDetails.otherProperties" class="row">
+                            <span>{{key}} : </span>
+                            <span>{{value}}</span>
+                        </div>
+                        <div class="row">
+                            <span>Quantity : </span>
+                            <span>{{item.qty}}{{item.uom}}</span>
+                        </div>
+                    </div>
+                    <div id="bottom_content">
+                        <div id="price">{{item.price}}</div>
+                        <div id="add_to_cart" ng-click="addToCart(item)">Add to cart</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
