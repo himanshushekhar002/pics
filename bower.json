@@ -11,8 +11,12 @@
     "url": "git://github.com/himanshushekhar002/pics/pics.git"
   },
   "main": [
-    "pics.min.js",
-    "pics.min.css"
+    "public_html/apiservices/chatapiservices.js",
+    "public_html/assets/css/customchat.css",
+    "public_html/components/chatui/chat_controller.js",
+    "public_html/directives/chatui_directives.js",
+    "public_html/filters/chatui_filters.js",
+    "public_html/chatapp.js",        
   ],
   "keywords": [
     "pics",
