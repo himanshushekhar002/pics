@@ -6,7 +6,6 @@
   ],
   "description": "Angular js plugin to enable chatbot interface for the company power2sme.",
   "license": "MIT",
-  "homepage": "http://www.power2sme.com",
   "repository": {
     "type": "git",
     "url": "git://github.com/himanshushekhar002/pics/pics.git"
@@ -22,12 +21,12 @@
     "bot"
   ],
   "dependencies": {
-           "jquery": ">3.2.0",
-           "angular": ">1.5.8",
-           "angular/bower-angular-animate": ">1.5.8",
-           "angular/angular-aria": ">1.5.8",
-           "angular/material": ">1.1.4",
-           "flesler/jquery.scrollTo": ">2.1.0"
+           "jquery": "~3.2.0",
+           "angular": "~1.5.8",
+           "angular/bower-angular-animate": "~1.5.8",
+           "angular/angular-aria": "~1.5.8",
+           "angular/material": "~1.1.4",
+           "flesler/jquery.scrollTo": "~2.1.0"
            },
   "resolutions": {
       "angular": "1.5.8"
