@@ -11,6 +11,9 @@ var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 
 gulp.task('minifyalljs', function () {
+    
+    gulp.src(['public_html/components/**/*']).pipe(gulp.dest('dist/components'));
+    
     gulp.src([
         'public_html/chatapp.js',
         'public_html/filters/chatui_filters.js',
