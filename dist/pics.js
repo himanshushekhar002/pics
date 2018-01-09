@@ -92,6 +92,11 @@ power2smeChat.directive("scroll", function ($window) {
         }
     };
 });
+
+//-----------------------TEMPLATE DETAILS--------------------------------------------
+//All templates are created int $templateCache by running a gulp task of htmlToJs
+//Then the generated module of Templates is injected in our APP. So we need to 
+//run minification task which will include templates.js also.
 //------------------------MAIN-TEMPLATE DIRECTIVES------------------------------------
 power2smeChat.directive('picsView', function () {
     return {
@@ -291,7 +296,7 @@ var app = angular.module("app.chatui");
 
 app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location, ChatServices) {
         /*PRIVATE VARIABLES*/
-        var chat_view_state = false;
+        var chat_view_state = true;
         var req_que = 0; // This will keep record of number of messages client has sent which are still pending for response.
         var chatWindowTitle = 'Chat';
         var chatid = 0;
@@ -503,10 +508,16 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 $scope.userdetail.phone = $scope.phone;
                 $scope.userdetail.name = $scope.name;
                 $scope.userdetail.email = $scope.email;
+                initChangeViewState();
             });
         }
 
-
+        function initChangeViewState(){
+            if(chat_view_state==true){
+                $scope.changeChatViewState();
+                $scope.changeChatViewState();
+            }
+        }
         function callServices() {
         }//callServices end
 
