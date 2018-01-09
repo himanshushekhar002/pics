@@ -56,10 +56,16 @@ power2smeChat.directive("scroll", function ($window) {
         }
     };
 });
+
+//-----------------------TEMPLATE DETAILS--------------------------------------------
+//All templates are created int $templateCache by running a gulp task of htmlToJs
+//Then the generated module of Templates is injected in our APP. So we need to 
+//run minification task which will include templates.js also.
+//------------------------MAIN-TEMPLATE DIRECTIVES------------------------------------
 power2smeChat.directive('picsView', function () {
     return {
         restrict: 'E',
-        templateUrl: 'components/chatui/chatview.html',
+        templateUrl: 'chatview.html',
         link: function (scope, element, attrs) {
             console.log('I am chatui directive');
             try {
@@ -83,6 +89,34 @@ power2smeChat.directive('picsView', function () {
         }
     };
 });
+
+//------------------------SUB-TEMPLATE DIRECTIVES------------------------------------
+
+power2smeChat.directive('welcomeFrame', function () {
+    return {
+        templateUrl:'welcomeframeview.html'
+    };
+});
+
+power2smeChat.directive('registerFrame', function () {
+    return {
+        templateUrl: 'registerframeview.html'
+    };
+});
+
+power2smeChat.directive('chatFrame', function () {
+    return {
+        templateUrl: 'chatframeview.html'
+    };
+});
+
+power2smeChat.directive('sendmessageFrame', function () {
+    return {
+        templateUrl: 'sendmessageboxview.html'
+    };
+});
+//-------------------------------------------------------------------------------
+
 
 power2smeChat.directive('myEnter', function () {
     return function (scope, element, attrs) {

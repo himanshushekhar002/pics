@@ -9,17 +9,40 @@ var minify = require('gulp-minify'); //for js
 var cssmin = require('gulp-cssmin'); //for css
 var rename = require('gulp-rename');
 var concat = require('gulp-concat');
+var templateCache = require('gulp-angular-templatecache');
+ 
 
-gulp.task('minifyalljs', function () {
-    
-    gulp.src(['public_html/components/**/*']).pipe(gulp.dest('dist/components'));
-    
+gulp.task('templateToJs[Run First]', function () {
+    templateToJs();
+});
+
+
+gulp.task('intitialiseProject[Run Second]', function () {
+        minifyjs();
+        minifycss();                        
+});
+
+gulp.task('moveDistToPublic[Run Third]', function () {
+    moveCopyOfDistToPublic();
+});
+
+function minifycss(){
     gulp.src([
+        'public_html/assets/css/customchat.css'
+    ])
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min', basename : 'pics'}))
+        .pipe(gulp.dest('dist'));
+}
+
+function minifyjs(){
+        gulp.src([
         'public_html/chatapp.js',
         'public_html/filters/chatui_filters.js',
         'public_html/directives/chatui_directives.js',
         'public_html/apiservices/chatapiservices.js',
-        'public_html/components/chatui/chat_controller.js'
+        'public_html/components/chatui/chat_controller.js',
+        'dist/templates.js'
     ])
             .pipe(concat('pics.js'))
             .pipe(minify({
@@ -32,14 +55,18 @@ gulp.task('minifyalljs', function () {
                     })
                     )
             .pipe(gulp.dest('dist/'));
-});
+}
 
+function templateToJs(){
+ gulp.src([
+            'public_html/components/chatui/subviews/*.html',
+            'public_html/components/chatui/*.html'])
+    .pipe(templateCache('templates.js',{
+        standalone : true  
+    }))
+    .pipe(gulp.dest('dist/'));
+}
 
-gulp.task('minifyallcss', function () {
-    gulp.src([
-        'public_html/assets/css/customchat.css'
-    ])
-        .pipe(cssmin())
-        .pipe(rename({suffix: '.min', basename : 'pics'}))
-        .pipe(gulp.dest('dist'));
-});
+function moveCopyOfDistToPublic(){
+    gulp.src(['dist/**/*']).pipe(gulp.dest('public_html/dist/'));
+}

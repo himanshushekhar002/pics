@@ -6,7 +6,7 @@
  * 
  */
 //'use strict';
-var app = angular.module('app.chatui', ['ngMaterial', 'ngAnimate', 'ngAria']);
+var app = angular.module('app.chatui', ['ngMaterial', 'ngAnimate', 'ngAria', 'templates']);
 
 app.config(['$mdThemingProvider', '$httpProvider', function ($mdThemingProvider, $httpProvider) {
         $mdThemingProvider.theme('default')
