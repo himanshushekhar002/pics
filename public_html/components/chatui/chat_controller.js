@@ -225,7 +225,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 $scope.userdetail.name = $scope.name;
                 $scope.userdetail.email = $scope.email;
                 initChangeViewState();
-            });
+            },2000);
         }
 
         function initChangeViewState(){
