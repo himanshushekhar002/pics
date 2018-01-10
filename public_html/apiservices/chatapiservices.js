@@ -5,7 +5,7 @@
  * 
  */
 
-var app = angular.module('app.chatui');
+var app = angular.module('app.pics');
 app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
 
         //var BASE_DOMAIN = 'http://125.63.66.69/';

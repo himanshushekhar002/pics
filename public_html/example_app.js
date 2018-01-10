@@ -11,7 +11,7 @@
  * 
  */
 //'use strict';
-var app = angular.module('ExampleApp', ['ui.router','app.chatui']);
+var app = angular.module('ExampleApp', ['ui.router','app.pics']);
 
 app.config(['$urlRouterProvider', '$stateProvider', '$locationProvider', '$httpProvider','$compileProvider',
     function ($urlRouterProvider, $stateProvider, $locationProvider, $httpProvider,$compileProvider) {

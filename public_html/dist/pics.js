@@ -6,7 +6,7 @@
  * 
  */
 //'use strict';
-var app = angular.module('app.chatui', ['ngMaterial', 'ngAnimate', 'ngAria', 'ngSanitize', 'templates']);
+var app = angular.module('app.pics', ['ngMaterial', 'ngAnimate', 'ngAria', 'ngSanitize', 'templates']);
 
 app.config(['$mdThemingProvider', '$httpProvider', function ($mdThemingProvider, $httpProvider) {
         $mdThemingProvider.theme('default')
@@ -26,7 +26,7 @@ app.config(['$mdThemingProvider', '$httpProvider', function ($mdThemingProvider,
  Created on : June 19, 2017
  Author     : Himanshu Shekhar {himanshushekhar00@gmail.com}
  */
-var power2smeChat = angular.module("app.chatui");
+var power2smeChat = angular.module("app.pics");
 
 power2smeChat.filter('trust', ['$sce', function ($sce) {
         return function (value, type) {
@@ -43,7 +43,7 @@ power2smeChat.filter('trust', ['$sce', function ($sce) {
  Created on : June 19, 2017
  Author     : Himanshu Shekhar {himanshushekhar00@gmail.com}
  */
-var power2smeChat = angular.module("app.chatui");
+var power2smeChat = angular.module("app.pics");
 
 /*
  * This directive helps in main chat conversation window auo scrolling
@@ -207,7 +207,7 @@ power2smeChat.directive('bindHtmlCompile', ['$compile', function ($compile) {
  * 
  */
 
-var app = angular.module('app.chatui');
+var app = angular.module('app.pics');
 app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
 
         //var BASE_DOMAIN = 'http://125.63.66.69/';
@@ -300,7 +300,7 @@ app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
  * 
  */
 
-var app = angular.module("app.chatui");
+var app = angular.module("app.pics");
 
 app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', '$mdDialog', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location,$mdDialog, ChatServices) {
         /*PRIVATE VARIABLES*/

@@ -8,7 +8,7 @@
  * 
  */
 
-var app = angular.module("app.chatui");
+var app = angular.module("app.pics");
 
 app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', '$mdDialog', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location,$mdDialog, ChatServices) {
         /*PRIVATE VARIABLES*/

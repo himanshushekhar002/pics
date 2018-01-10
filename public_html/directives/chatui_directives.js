@@ -7,7 +7,7 @@
  Created on : June 19, 2017
  Author     : Himanshu Shekhar {himanshushekhar00@gmail.com}
  */
-var power2smeChat = angular.module("app.chatui");
+var power2smeChat = angular.module("app.pics");
 
 /*
  * This directive helps in main chat conversation window auo scrolling
