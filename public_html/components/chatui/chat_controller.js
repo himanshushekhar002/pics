@@ -10,7 +10,7 @@
 
 var app = angular.module("app.chatui");
 
-app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location, ChatServices) {
+app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', '$mdDialog', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location,$mdDialog, ChatServices) {
         /*PRIVATE VARIABLES*/
         var chat_view_state = true;
         var req_que = 0; // This will keep record of number of messages client has sent which are still pending for response.
@@ -43,6 +43,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         //var customerIconUrl = 'img/account_circle_client.png';
         var customerIconUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAYAAAAGAB4TKWmAAAC60lEQVRIx7WWQWuUVxSGn3PvFzVJHWkgjAkOYzSdtNJF4kLqWopFSkTrRnCRnWLQgj9A0B8g2JLSLoQsukxNE0Qi/oBKF3EQoU6MiWHEOARHjSYx8d57XMyMyTgzmRHqC9/mcO97znvu/d5zhU3Q/cvyrmB9P6I/qkoXIgkAVLMiOovKDePt+PT5lie1OKRaMPnHUofx4TIwAERsDgcMB2suzp1una+boOu3xX6QP4HtVqA3btkfNyRihi+3Fta8WIW5xUA6F0jnPF4BeA16avZsbLxmgt1Db34W0SuA6YtbTvREtLdUFfkBC8vKSMZxN+cBgqpceDz4xdWKBMXKR41gjqUiDnfV60w5JmYcfz90BCWAHispEYDEr0udkQ3/AbGfeirJvcLYQ8edpx6A7zotR7+KsFKZ5PqUA1h03nyTPdf61ABENlwCYn1xW7XysSnHxIzj5Vvl5VtlYsYxViAqww97IvriFiBW5MTsHVpOAANW4MTX1dvyT7HyejEocBSVDewdWk6YIL4fiHrjlvbmzQ+0EbQ3C70FFVEQ329U9QhAX9zU3HSw0zYUK6HEpapHIhHpBkjGaic4mopAqDjkWihxiUh3BHQA7NhWW7YVOJ6KOJ5q7Opu4OowDe0oYs0Xvk9BBMwD21cdbKvS1n/nPZPPApl8YOldwRNam4SeNsP+nYYDHZWbVtdv8HykqtMiksrkQ9niuVfK7+k1nq9oBcHSO2Uy55nMeUanHGd6t5DcsX4DM/kAgKpOGxG5CXA3F8pIrt2rTv4xnq8o1+6tlcVKXCJy0xi144BL5zwLGwh72ho/no1rF1aUdMH4nFE7bh4NtmSBYa8w8mC9eSf3NXEoadns1xPgUNJycl/Th9jIA1ey7+FHgy3ZumaXyQduP/bcX/CEokAj8G275fvdtqz6W7OOvzLlZtewXXuFfLGFbc1S4aS3Zh2jUzXsuoTPOnA+UlJ3ZGYXA5OfOjJL+KxDfyP+j2fLewM9dOyX3Vh4AAAAAElFTkSuQmCC';
         var maxTextLength = 75;
+        var scrollToLibraryInclusionWarning = true;
 
         /*PUBLIC VARIABLES :: TWO WAY BINDERS*/
         $scope.queryResponse = "";
@@ -130,7 +131,14 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 $scope.phoneValidationMessageList.push(validation);
                 var id = $scope.phoneValidationMessageList.length - 1;
                 $timeout(function () {
-                    jQuery('#content').scrollTo('#' + id);
+                    if(angular.isDefined(jQuery('#content').scrollTo)){
+                        jQuery('#content').scrollTo('#' + id);
+                    }else{
+                        if(scrollToLibraryInclusionWarning){
+                            $scope.showAlert('Chat Window WARNING : Library not included ! ','<i>Please include jQueryScrollTo library.<br/>CDN LINK for the library<br/></i><b>https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js</b><br><i>Or from bower</i><br><b>bower install jquery.scrollTo</b>');
+                            scrollToLibraryInclusionWarning=false;
+                        }
+                    }
                 });
             }
         };
@@ -209,6 +217,19 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
 
         $scope.getMaxTextBoxLength = function () {
             return maxTextLength;
+        };
+        
+         $scope.showAlert = function (title, msg, ev) {
+                $mdDialog.show(
+                        $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title(title)
+                        .htmlContent(msg)
+                        .ariaLabel('Error Alert Dialog')
+                        .ok('OK')
+                        .theme('default')
+                        .targetEvent(ev)
+                        );            
         };
 
         /*#######################################*/

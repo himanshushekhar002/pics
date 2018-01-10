@@ -9,6 +9,9 @@
  */
 var power2smeChat = angular.module("app.chatui");
 
+/*
+ * This directive helps in main chat conversation window auo scrolling
+ */
 power2smeChat.directive('schrollBottom', function () {
     return {
         scope: {
@@ -31,7 +34,12 @@ power2smeChat.directive('schrollBottom', function () {
     };
 });
 
-
+/*
+ * THIS IS CURRENTLY NOT IN USE.
+ * This can be used for horizontal scrolling
+ * for dispaying price card.
+ * This feature may require little modification
+ */
 power2smeChat.directive("scroll", function ($window) {
     return {
         restrict: "A",

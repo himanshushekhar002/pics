@@ -6,7 +6,7 @@
  * 
  */
 //'use strict';
-var app = angular.module('app.chatui', ['ngMaterial', 'ngAnimate', 'ngAria', 'templates']);
+var app = angular.module('app.chatui', ['ngMaterial', 'ngAnimate', 'ngAria', 'ngSanitize', 'templates']);
 
 app.config(['$mdThemingProvider', '$httpProvider', function ($mdThemingProvider, $httpProvider) {
         $mdThemingProvider.theme('default')
@@ -45,6 +45,9 @@ power2smeChat.filter('trust', ['$sce', function ($sce) {
  */
 var power2smeChat = angular.module("app.chatui");
 
+/*
+ * This directive helps in main chat conversation window auo scrolling
+ */
 power2smeChat.directive('schrollBottom', function () {
     return {
         scope: {
@@ -67,7 +70,12 @@ power2smeChat.directive('schrollBottom', function () {
     };
 });
 
-
+/*
+ * THIS IS CURRENTLY NOT IN USE.
+ * This can be used for horizontal scrolling
+ * for dispaying price card.
+ * This feature may require little modification
+ */
 power2smeChat.directive("scroll", function ($window) {
     return {
         restrict: "A",
@@ -294,7 +302,7 @@ app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
 
 var app = angular.module("app.chatui");
 
-app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location, ChatServices) {
+app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', '$mdDialog', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location,$mdDialog, ChatServices) {
         /*PRIVATE VARIABLES*/
         var chat_view_state = true;
         var req_que = 0; // This will keep record of number of messages client has sent which are still pending for response.
@@ -327,6 +335,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         //var customerIconUrl = 'img/account_circle_client.png';
         var customerIconUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAYAAAAGAB4TKWmAAAC60lEQVRIx7WWQWuUVxSGn3PvFzVJHWkgjAkOYzSdtNJF4kLqWopFSkTrRnCRnWLQgj9A0B8g2JLSLoQsukxNE0Qi/oBKF3EQoU6MiWHEOARHjSYx8d57XMyMyTgzmRHqC9/mcO97znvu/d5zhU3Q/cvyrmB9P6I/qkoXIgkAVLMiOovKDePt+PT5lie1OKRaMPnHUofx4TIwAERsDgcMB2suzp1una+boOu3xX6QP4HtVqA3btkfNyRihi+3Fta8WIW5xUA6F0jnPF4BeA16avZsbLxmgt1Db34W0SuA6YtbTvREtLdUFfkBC8vKSMZxN+cBgqpceDz4xdWKBMXKR41gjqUiDnfV60w5JmYcfz90BCWAHispEYDEr0udkQ3/AbGfeirJvcLYQ8edpx6A7zotR7+KsFKZ5PqUA1h03nyTPdf61ABENlwCYn1xW7XysSnHxIzj5Vvl5VtlYsYxViAqww97IvriFiBW5MTsHVpOAANW4MTX1dvyT7HyejEocBSVDewdWk6YIL4fiHrjlvbmzQ+0EbQ3C70FFVEQ329U9QhAX9zU3HSw0zYUK6HEpapHIhHpBkjGaic4mopAqDjkWihxiUh3BHQA7NhWW7YVOJ6KOJ5q7Opu4OowDe0oYs0Xvk9BBMwD21cdbKvS1n/nPZPPApl8YOldwRNam4SeNsP+nYYDHZWbVtdv8HykqtMiksrkQ9niuVfK7+k1nq9oBcHSO2Uy55nMeUanHGd6t5DcsX4DM/kAgKpOGxG5CXA3F8pIrt2rTv4xnq8o1+6tlcVKXCJy0xi144BL5zwLGwh72ho/no1rF1aUdMH4nFE7bh4NtmSBYa8w8mC9eSf3NXEoadns1xPgUNJycl/Th9jIA1ey7+FHgy3ZumaXyQduP/bcX/CEokAj8G275fvdtqz6W7OOvzLlZtewXXuFfLGFbc1S4aS3Zh2jUzXsuoTPOnA+UlJ3ZGYXA5OfOjJL+KxDfyP+j2fLewM9dOyX3Vh4AAAAAElFTkSuQmCC';
         var maxTextLength = 75;
+        var scrollToLibraryInclusionWarning = true;
 
         /*PUBLIC VARIABLES :: TWO WAY BINDERS*/
         $scope.queryResponse = "";
@@ -414,7 +423,14 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 $scope.phoneValidationMessageList.push(validation);
                 var id = $scope.phoneValidationMessageList.length - 1;
                 $timeout(function () {
-                    jQuery('#content').scrollTo('#' + id);
+                    if(angular.isDefined(jQuery('#content').scrollTo)){
+                        jQuery('#content').scrollTo('#' + id);
+                    }else{
+                        if(scrollToLibraryInclusionWarning){
+                            $scope.showAlert('Chat Window WARNING : Library not included ! ','<i>Please include jQueryScrollTo library.<br/>CDN LINK for the library<br/></i><b>https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js</b><br><i>Or from bower</i><br><b>bower install jquery.scrollTo</b>');
+                            scrollToLibraryInclusionWarning=false;
+                        }
+                    }
                 });
             }
         };
@@ -493,6 +509,19 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
 
         $scope.getMaxTextBoxLength = function () {
             return maxTextLength;
+        };
+        
+         $scope.showAlert = function (title, msg, ev) {
+                $mdDialog.show(
+                        $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title(title)
+                        .htmlContent(msg)
+                        .ariaLabel('Error Alert Dialog')
+                        .ok('OK')
+                        .theme('default')
+                        .targetEvent(ev)
+                        );            
         };
 
         /*#######################################*/
@@ -950,7 +979,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
 
 
 
-angular.module('templates', []).run(['$templateCache', function($templateCache) {$templateCache.put('chatframeview.html','<!DOCTYPE html>\n<!--\nThis file is property of Power2SME pvt. ltd.\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\n@Date :\n@FileName For Reference :\n@Purpose : \n@Other Description :\n-->\n\n<div id="vertical-container" schroll-bottom="chatMessageList">\n    <div ng-repeat="msg in chatMessageList track by $index" class="repeated-item2" ng-init="parentIndex = $index">\n        <div class="chatmsg" ng-class="{\'message-box-container-bot\':msg.msgBy == \'bot\' || msg.msgBy == \'human\' ,\'message-box-container-client\':msg.msgBy == \'client\'}" >\n            <img class="user-icon" ng-src="{{msg.userIconPath}}">\n                <div bind-html-compile="msg.message">\n            </div>\n            <div ng-show="msg.message == \'\' && true || false">\n                <div class="typing-dot" >\n                </div>\n                <div class="typing-dot1" >\n                </div>\n                <div class="typing-dot2" >\n                </div>\n            </div>\n        </div>\n        <div id="suggesstion_bar" class="suggestion-bar-container" ng-show="msg.dataListPresent" >\n            <md-virtual-repeat-container id="horizontal-container" class="horizontal-container" md-orient-horizontal>\n                <div md-virtual-repeat="item in msg.dataList"\n                     class="repeated-item" >\n                    <div class ="chip" ng-click="choose($index, parentIndex)">\n                        {{item}}\n                    </div>\n                </div>\n            </md-virtual-repeat-container>\n        </div>\n        <div class="card-container" ng-show="msg.showPrice" scroll myindex="{{$index}}" chatmessagelist="chatMessageList" sendcardrequest ="sendCardRequest(true)">\n            <div ng-repeat="item in msg.dataList" class="repeated-card-item">\n                <div class="card">\n                    <div id="card_header">\n                        <div id="subcategory">\n                            {{item.skuDetails.subcategory}}\n                        </div>\n                        <div id="brand">\n                            {{item.skuDetails.brand}}\n                        </div>\n                    </div>\n                    <div id="middle_content">\n                        <div class="row">\n                            <span>Category : </span>\n                            <span>{{item.skuDetails.category}}</span>\n                        </div>\n                        <div ng-repeat="(key, value) in item.skuDetails.otherProperties" class="row">\n                            <span>{{key}} : </span>\n                            <span>{{value}}</span>\n                        </div>\n                        <div class="row">\n                            <span>Quantity : </span>\n                            <span>{{item.qty}}{{item.uom}}</span>\n                        </div>\n                    </div>\n                    <div id="bottom_content">\n                        <div id="price">{{item.price}}</div>\n                        <div id="add_to_cart" ng-click="addToCart(item)">Add to cart</div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>');
+angular.module('templates', []).run(['$templateCache', function($templateCache) {$templateCache.put('chatframeview.html','<!DOCTYPE html>\n<!--\nThis file is property of Power2SME pvt. ltd.\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\n@Date :\n@FileName For Reference :\n@Purpose : \n@Other Description :\n-->\n\n<div id="vertical-container" schroll-bottom="chatMessageList">\n    <div ng-repeat="msg in chatMessageList track by $index" class="repeated-item2" ng-init="parentIndex = $index">\n        <div class="chatmsg" ng-class="{\'message-box-container-bot\':msg.msgBy == \'bot\' || msg.msgBy == \'human\' ,\'message-box-container-client\':msg.msgBy == \'client\'}" >\n            <img class="user-icon" ng-src="{{msg.userIconPath}}">\n                <div bind-html-compile="msg.message">\n            </div>\n            <div ng-show="msg.message == \'\' && true || false">\n                <div class="typing-dot" >\n                </div>\n                <div class="typing-dot1" >\n                </div>\n                <div class="typing-dot2" >\n                </div>\n            </div>\n        </div>\n        <div id="suggesstion_bar" class="suggestion-bar-container" ng-show="msg.dataListPresent" >\n            <md-virtual-repeat-container id="horizontal-container" class="horizontal-container" md-orient-horizontal>\n                <div md-virtual-repeat="item in msg.dataList"\n                     class="repeated-item" >\n                    <div class ="chip" ng-click="choose($index, parentIndex)">\n                        {{item}}\n                    </div>\n                </div>\n            </md-virtual-repeat-container>\n        </div>\n        <div class="card-container" ng-show="msg.showPrice" myindex="{{$index}}" chatmessagelist="chatMessageList" sendcardrequest ="sendCardRequest(true)">\n            <div ng-repeat="item in msg.dataList" class="repeated-card-item">\n                <div class="card">\n                    <div id="card_header">\n                        <div id="subcategory">\n                            {{item.skuDetails.subcategory}}\n                        </div>\n                        <div id="brand">\n                            {{item.skuDetails.brand}}\n                        </div>\n                    </div>\n                    <div id="middle_content">\n                        <div class="row">\n                            <span>Category : </span>\n                            <span>{{item.skuDetails.category}}</span>\n                        </div>\n                        <div ng-repeat="(key, value) in item.skuDetails.otherProperties" class="row">\n                            <span>{{key}} : </span>\n                            <span>{{value}}</span>\n                        </div>\n                        <div class="row">\n                            <span>Quantity : </span>\n                            <span>{{item.qty}}{{item.uom}}</span>\n                        </div>\n                    </div>\n                    <div id="bottom_content">\n                        <div id="price">{{item.price}}</div>\n                        <div id="add_to_cart" ng-click="addToCart(item)">Add to cart</div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>');
 $templateCache.put('registerframeview.html','<!DOCTYPE html>\n<!--\nThis file is property of Power2SME pvt. ltd.\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\n@Date :\n@FileName For Reference :\n@Purpose : \n@Other Description :\n-->\n<td style="height: 480px;"> \n    <div class="chatmsg message-box-container-bot">\n        <img class="welcome-user-icon" ng-src="{{getBotIconUrl()}}">\n        <div>\n            <b>PICS</b><br/>\n            <small>Virtual Assistant Agent</small>\n        </div>\n    </div>\n<md-content id="content" style="height:160px;width: 400px;">\n    <div class="chatmsg message-box-container-bot">\n        <img class="user-icon" ng-src="{{getBotIconUrl()}}">\n        <div>\n            Hello, How can I help you ?\n        </div>\n    </div>\n    <div class="chatmsg message-box-container-bot">\n        <img class="user-icon" ng-src="{{getBotIconUrl()}}">\n        <div>\n            Please provide your mobile number to start with.\n        </div>\n    </div>\n    <!-- -->\n    <div>\n        <div ng-repeat="msg in phoneValidationMessageList track by $index" class="chatmsg message-box-container-bot">\n            <img class="user-icon" ng-src="{{getBotIconUrl()}}">\n        <div id="{{$index}}">\n            {{msg}}\n        </div>\n        </div>\n    </div>\n</md-content>\n<div id="welcome-sign-up-container">\n    <md-input-container class="md-block">            \n        <label>Contact Number</label>            \n        <input id="mobilenumber" ng-model="userdetail.phone" required="" my-enter="sign_up_submit()">\n    </md-input-container>\n    <div>\n        <md-button id="chat_now_button" class="md-raised md-primary md-hue-2" ng-click="sign_up_submit()">START CHAT</md-button>\n    </div>\n</div>\n</td>');
 $templateCache.put('sendmessageboxview.html','<!--\nThis file is property of Power2SME pvt. ltd.\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\n@Date :\n@FileName For Reference :\n@Purpose : \n@Other Description :\n-->\n<div class="bottom-bar-container">\n    <div class="suggestion-bar-container">\n        <md-virtual-repeat-container id="horizontal-container" class="horizontal-container" md-orient-horizontal>\n            <div md-virtual-repeat="item in suggestionList"\n                 class="repeated-item" >\n                <div class ="chip" ng-click="choose($index, -1)">\n                    {{item}}\n                </div>\n            </div>\n        </md-virtual-repeat-container>\n    </div>\n    <table ng-show="isProgressInActive" class="write-box-table" >\n        <tr>\n            <td  style="height: 48px;width:100%;">\n                <!--                <input id="input" class="input_box" type="text"/>-->\n        <md-input-container class="send-message-input-box md-block" md-is-error="validateText()" md-no-float>\n            <textarea id="input" ng-model="message.text" max-rows="3" md-maxlength="getMaxTextBoxLength()" class="input-box" type="text" placeholder="Type your message ..." my-enter="send()" ctrl-enter>\n            </textarea>\n        </md-input-container>\n        </td>\n        <td class="chat_send_button_td" ng-click="send();" >\n\n        <md-toolbar class="md-primary md-hue-2 send-icon chat-send-button"><md-icon>send</md-icon></md-toolbar>\n        </td>\n        </tr>\n    </table>\n</div>');
 $templateCache.put('suggestionview.html','<!DOCTYPE html>\n<!--\nThis file is property of Power2SME pvt. ltd.\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\n@Date :\n@FileName For Reference :\n@Purpose : \n@Other Description :\n-->\n<div>\n        <div>TODO write content</div>\n</div>\n');
