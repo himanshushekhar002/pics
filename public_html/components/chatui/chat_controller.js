@@ -158,7 +158,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             if (chat_view_state == false) {
                 chat_view_state = true;
                 //document.getElementById('main_container').style.height = '480px';
-                jQuery('#main_container').animate({height: '480px', width: '400px'}, 350, 'swing', function () {
+                jQuery('#main_container').animate({height: '480px', width: '300px'}, 350, 'swing', function () {
                     //alert("Finished animating");
                 });
                 jQuery('#chat_header_control_icon').attr('src', 'img/window_minimize.png');

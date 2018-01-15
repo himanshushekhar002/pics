@@ -15,7 +15,7 @@ This file is property of Power2SME pvt. ltd.
             <small>Virtual Assistant Agent</small>
         </div>
     </div>
-<md-content id="content" style="height:160px;width: 400px;">
+<md-content id="content" style="height:160px; width: 100%;">
     <div class="chatmsg message-box-container-bot">
         <img class="user-icon" ng-src="{{getBotIconUrl()}}">
         <div>
@@ -44,7 +44,7 @@ This file is property of Power2SME pvt. ltd.
         <input id="mobilenumber" ng-model="userdetail.phone" required="" my-enter="sign_up_submit()">
     </md-input-container>
     <div>
-        <md-button id="chat_now_button" class="md-raised md-primary md-hue-2" ng-click="sign_up_submit()">START CHAT</md-button>
+        <md-button id="chat_now_button" class="md-raised md-primary md-hue-2 start_chat" ng-click="sign_up_submit()">START CHAT</md-button>
     </div>
 </div>
 </td>
