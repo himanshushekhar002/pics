@@ -12,9 +12,9 @@ This file is property of Power2SME pvt. ltd.
     <div ng-repeat="msg in chatMessageList track by $index" class="repeated-item2" ng-init="parentIndex = $index">
         <div class="chatmsg" ng-class="{'message-box-container-bot':msg.msgBy == 'bot' || msg.msgBy == 'human' ,'message-box-container-client':msg.msgBy == 'client'}" >
             <img class="user-icon" ng-src="{{msg.userIconPath}}">
-                <div bind-html-compile="msg.message">
-            </div>
-            <div ng-show="msg.message == '' && true || false">
+                <div ng-hide="msg.message == '' && true || false" ng-class="{'white-bubble':msg.msgBy == 'bot' || msg.msgBy == 'human' ,'blue-bubble':msg.msgBy == 'client'}" bind-html-compile="msg.message">
+                </div>
+            <div class="white-bubble" ng-show="msg.message == '' && true || false">
                 <div class="typing-dot" >
                 </div>
                 <div class="typing-dot1" >
