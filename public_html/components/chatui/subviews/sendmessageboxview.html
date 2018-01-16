@@ -17,12 +17,12 @@ This file is property of Power2SME pvt. ltd.
             </div>
         </md-virtual-repeat-container>
     </div>
-    <table ng-show="isProgressInActive" class="write-box-table" >
+    <table class="write-box-table" >
         <tr>
             <td  style="height: 48px;width:100%;">
                 <!--                <input id="input" class="input_box" type="text"/>-->
         <md-input-container class="send-message-input-box md-block" md-is-error="validateText()" md-no-float>
-            <textarea id="input" ng-model="message.text" max-rows="3" md-maxlength="getMaxTextBoxLength()" class="input-box" type="text" placeholder="Write a reply ..." my-enter="send()" ctrl-enter>
+            <textarea ng-disabled="!isProgressInActive" id="input" ng-model="message.text" max-rows="3" md-maxlength="getMaxTextBoxLength()" class="input-box" type="text" placeholder="Write a reply ..." my-enter="send()" ctrl-enter>
             </textarea>
         </md-input-container>
         </td>
