@@ -1,4 +1,296 @@
+
 /* 
+ * This file is property of Power2SME pvt. ltd. 
+ @author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)
+ * This file is central configuration file. Changes should be done cautiously
+ * 
+ */
+//'use strict';
+var app = angular.module('app.pics', ['ngMaterial', 'ngAnimate', 'ngAria', 'ngSanitize', 'templates','ngScrollbars']);
+
+app.config(['$mdThemingProvider', '$httpProvider', function ($mdThemingProvider, $httpProvider) {
+        $mdThemingProvider.theme('default')
+                .primaryPalette('light-blue')
+                .accentPalette('blue-grey')
+                .warnPalette('grey');
+        $httpProvider.defaults.withCredentials = true;
+    }
+]);
+
+/* 
+ * To change $scope license header, choose License Headers in Project Properties.
+ * To change $scope template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/* 
+ Created on : June 19, 2017
+ Author     : Himanshu Shekhar {himanshushekhar00@gmail.com}
+ */
+var power2smeChat = angular.module("app.pics");
+
+power2smeChat.filter('trust', ['$sce', function ($sce) {
+        return function (value, type) {
+            return $sce.trustAs(type || 'html', value);
+        };
+    }]);
+
+/* 
+ * To change $scope license header, choose License Headers in Project Properties.
+ * To change $scope template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/* 
+ Created on : June 19, 2017
+ Author     : Himanshu Shekhar {himanshushekhar00@gmail.com}
+ */
+var power2smeChat = angular.module("app.pics");
+
+/*
+ * This directive helps in main chat conversation window auo scrolling
+ */
+power2smeChat.directive('schrollBottom', function () {
+    return {
+        scope: {
+            schrollBottom: "="
+        },
+        link: function (scope, element) {
+            console.log('I am scrollBottom directive');
+            scope.$watchCollection('schrollBottom', function (newValue) {
+                if (newValue)
+                {
+                    var chat_view = document.getElementsByClassName('chat-view')[0];
+                    console.log("ScrollHeight:" + chat_view.scrollHeight);
+                    var scroll_height = chat_view.scrollHeight;
+                    jQuery('.chat-view').animate({scrollTop: scroll_height + 500}, 2000, 'linear', function () {
+                        //alert("Finished animating");
+                    });
+                }
+            });
+        }
+    };
+});
+
+/*
+ * THIS IS CURRENTLY NOT IN USE.
+ * This can be used for horizontal scrolling
+ * for dispaying price card.
+ * This feature may require little modification
+ */
+power2smeChat.directive("scroll", function ($window) {
+    return {
+        restrict: "A",
+        scope: {
+            myindex: "@",
+            chatmessagelist: "=",
+            sendcardrequest: "&"
+        },
+
+        link: function (scope, element, attrs) {
+            element.on("scroll", function () {
+                console.log('I am scroll directive');
+                //console.log(this.scrollLeft + ":" + this.scrollWidth + ":" + 400);
+                //console.log(scope.chatmessagelist[scope.myindex].scrollActive);
+                if (scope.chatmessagelist[scope.myindex].scrollActive == true) {
+                    if (this.scrollLeft >= ((this.scrollWidth - 1) - 400)) {
+                        scope.chatmessagelist[scope.myindex].scrollActive = false;
+                        scope.sendcardrequest();
+                    }
+                }
+            });
+        }
+    };
+});
+
+//-----------------------TEMPLATE DETAILS--------------------------------------------
+//All templates are created int $templateCache by running a gulp task of htmlToJs
+//Then the generated module of Templates is injected in our APP. So we need to 
+//run minification task which will include templates.js also.
+//------------------------MAIN-TEMPLATE DIRECTIVES------------------------------------
+power2smeChat.directive('picsView', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'chatview.html',
+        link: function (scope, element, attrs) {
+            console.log('I am chatui directive');
+            try {
+                scope.smeId = attrs.smeId;            
+            } catch (exception) {
+                console.log('NO SMEID ERROR');
+            }
+            try {
+                scope.email = attrs.emailId;
+//                scope.userdetail.email = attrs.emailId;
+            } catch (exception) {
+                console.log('NO EMAIL ERROR');
+            }
+            try {
+                scope.phone = attrs.phone;
+//                scope.userdetail.phone = attrs.phone;
+            } catch (exception) {
+                console.log(exception);
+                console.log('NO POHONE FIELD');
+            }               
+        }
+    };
+});
+
+//------------------------SUB-TEMPLATE DIRECTIVES------------------------------------
+
+power2smeChat.directive('welcomeFrame', function () {
+    return {
+        templateUrl:'welcomeframeview.html'
+    };
+});
+
+power2smeChat.directive('registerFrame', function () {
+    return {
+        templateUrl: 'registerframeview.html'
+    };
+});
+
+power2smeChat.directive('chatFrame', function () {
+    return {
+        templateUrl: 'chatframeview.html'
+    };
+});
+
+power2smeChat.directive('sendmessageFrame', function () {
+    return {
+        templateUrl: 'sendmessageboxview.html'
+    };
+});
+//-------------------------------------------------------------------------------
+
+
+power2smeChat.directive('myEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (!event.ctrlKey && event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.myEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+power2smeChat.directive('ctrlEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.ctrlKey && event.which === 13) {
+                console.log('CTRL + ENTER');
+            }
+            ;
+        });
+    };
+});
+
+power2smeChat.directive('bindHtmlCompile', ['$compile', function ($compile) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                scope.$watch(function () {
+                    return scope.$eval(attrs.bindHtmlCompile);
+                }, function (value) {
+                    element.html(value);
+                    $compile(element.contents())(scope);
+                });
+            }
+        };
+    }]);
+  
+/* 
+ * This file is property of Power2SME pvt. ltd.
+ @author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)
+ * 
+ * 
+ */
+
+var app = angular.module('app.pics');
+app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
+
+        //var BASE_DOMAIN = 'http://125.63.66.69/';
+        //var BASE_DOMAIN = 'http://localhost:8085/';
+        //var BASE_DOMAIN = 'http://192.168.0.186:8085';
+        var BASE_DOMAIN = 'https://uat.power2sme.com/';
+        var CONTEXT_WEBSITE = 'website/';
+        var CONTEXT_P2SAPI = 'p2sapi/';
+        //var CONTEXT_CHATAPI = 'chatapi/';
+        var CONTEXT_CHATAPI = 'chatai/';
+        var p2sapiusername = 'dev';
+        var p2sapipassword = 'developer';
+//        var tokenid = "9654910942";
+
+        this.submitLongRfqForm = function (rfqData)
+        {
+            var canceller = $q.defer();
+            return {
+                promise: $http.post(BASE_DOMAIN + "website/public/rfq/orderdetail", rfqData, {cache: true}),
+                cancel: canceller
+            };
+        };
+
+        this.submitquery = function (query,agenttype,tokenid)
+        {
+            var canceller = $q.defer();
+            return {
+                promise: $http.get(BASE_DOMAIN +CONTEXT_CHATAPI+ "query?q=" + query + "&tokenid=" + tokenid + "&agenttype="+agenttype),
+                cancel: canceller
+            };
+        };
+
+        this.fetchAgentResponse = function (tokenid,messageid)
+        {
+            
+            var canceller = $q.defer();
+            return {
+                promise: $http.get(BASE_DOMAIN + CONTEXT_CHATAPI+ "fetch/agent/responses?messageid=" + messageid + "&tokenid=" + tokenid),
+                cancel: canceller
+            };
+        };
+        
+        this.createContact = function (namefirst,namelast,email,mobileNumber){            
+            var canceller = $q.defer();
+            var user={
+                firstname : namefirst,
+                lastname : namelast,
+                mobilenumber : mobileNumber,
+                emailid : email
+            };
+            return {
+                promise: $http.post('https://uat.power2sme.com/website/public/rfq/usercontact',user),
+                cancel: canceller
+            };
+        };
+        
+        this.registerContact = function (namefirst,namelast,email,mobileNumber){            
+            var canceller = $q.defer();
+            var user={
+                name : namefirst+' '+namelast,
+                phone : mobileNumber,
+                email : email
+            };
+            return {
+                promise: $http.post(BASE_DOMAIN + CONTEXT_CHATAPI+ 'register',user),
+                cancel: canceller
+            };
+        };
+    }]);
+/*
+ * {
+ * "firstname":"Shubh",
+ * "lastname":"Singh",
+ * "mobilenumber":"9450430617",
+ * "emailid":"shubh.aug@mailinator.com",
+ * "smeid":null,
+ * "errorfirstname":false,
+ * "errorlastname":false,
+ * "errormobilenumber":false,
+ * "erroremailid":false
+ * }
+ */
+    /* 
  * This file is property of Power2SME pvt. ltd.
  @author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)
  @Date : June 19,2017
@@ -34,7 +326,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         var intervalStopId = null;
         var livechatTokenId = null;
         //var typingAgentIconUrl = 'img/botagent01.jpeg';
-        var typingAgentIconUrl = 'data:image/jpeg;base64,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';
+        var typingAgentIconUrl='data:image/jpeg;base64,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';
         var botIconUrl = 'img/new_bot.png';
         //var botIconUrl = 'data:image/jpeg;base64,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';
         //var agentIconUrl = 'img/agenticon14.png';
@@ -234,31 +526,31 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
 
         $scope.config = {
             autoHideScrollbar: false,
-            theme: 'minimal-dark',
+            theme: 'dark-2',
             advanced: {
                 updateOnContentResize: true
             },
-            setHeight: 390,
+            setHeight: 200,
             scrollInertia: 0,
             axis: 'y' // enable 2 axis scrollbars by default : 'yx'
         }
-           
 
+        
         $scope.sendEventToGA = function (eventname) {
-            var objectname = 'CHAT';
+            var objectname = 'CHAT'; 
             var pageUrl = window.location.pathname + '#!' + $location.path();
             if (PROPERTIES.HISTORY_API_ON) {
                 pageUrl = $location.path();
             } else {
                 pageUrl = window.location.pathname + '#!' + $location.path();
             }
-            if (angular.isDefined($window.ga)) {
+            if(angular.isDefined($window.ga)){
                 $window.ga('send', 'event', objectname, eventname, pageUrl);
-            } else {
+            }else{
                 $scope.showAlert('Chat Window WARNING : GA Library not included ! ', '<i>Please follow https://developers.google.com/analytics/devguides/collection/analyticsjs/events</i>');
             }
         };
-
+        
         /*#######################################*/
 
         /*INITIALIZES CONTROLLER*/
@@ -285,13 +577,6 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         function callServices() {
         }//callServices end
 
-        function autoScrollChatMessageList(){
-            $timeout(function(){
-                //scrollBarUpdate is function name declared in attribute
-                // of ng-scrollbar-update used on chat view
-                $scope.scrollBarUpdate('scrollTo','bottom');
-            });
-        }
 
         /*
          * This method will generate message object and push 
@@ -338,8 +623,6 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             if (replaceLast === true && who == 'client') { // for client gen typing after msg pushed
                 generateTypingResponse();
             }
-            //scroll to bottom after generating chat msg
-            autoScrollChatMessageList();
         }
 
         /*
@@ -469,7 +752,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
          * This method will process response 
          * got from backend
          */
-        function processForResponse(data) {            
+        function processForResponse(data) {
             console.log('inside data processing');
             var msg = '';
             var msgs = [];
@@ -527,7 +810,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 console.log(e);
                 msg = '';
                 generateChatMessage(msg, $scope.activeagent, true, null, false);
-            }                        
+            }
         }
 
         function convertUrlToHref(msg) {
@@ -720,3 +1003,12 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
 
 
 
+
+
+
+angular.module('templates', []).run(['$templateCache', function($templateCache) {$templateCache.put('chatframeview.html','<!DOCTYPE html>\n<!--\nThis file is property of Power2SME pvt. ltd.\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\n@Date :\n@FileName For Reference :\n@Purpose : \n@Other Description :\n-->\n\n<div id="vertical-container" schroll-bottom="chatMessageList">\n    <div ng-repeat="msg in chatMessageList track by $index" class="repeated-item2" ng-init="parentIndex = $index">\n        <div class="chatmsg" ng-class="{\'message-box-container-bot\':msg.msgBy == \'bot\' || msg.msgBy == \'human\' ,\'message-box-container-client\':msg.msgBy == \'client\'}" >\n            <img class="user-icon" ng-src="{{msg.userIconPath}}">\n                <div bind-html-compile="msg.message">\n            </div>\n            <div ng-show="msg.message == \'\' && true || false">\n                <div class="typing-dot" >\n                </div>\n                <div class="typing-dot1" >\n                </div>\n                <div class="typing-dot2" >\n                </div>\n            </div>\n        </div>\n        <div id="suggesstion_bar" class="suggestion-bar-container" ng-show="msg.dataListPresent" >\n            <md-virtual-repeat-container id="horizontal-container" class="horizontal-container" md-orient-horizontal>\n                <div md-virtual-repeat="item in msg.dataList"\n                     class="repeated-item" >\n                    <div class ="chip" ng-click="choose($index, parentIndex)">\n                        {{item}}\n                    </div>\n                </div>\n            </md-virtual-repeat-container>\n        </div>\n        <div class="card-container" ng-show="msg.showPrice" myindex="{{$index}}" chatmessagelist="chatMessageList" sendcardrequest ="sendCardRequest(true)">\n            <div ng-repeat="item in msg.dataList" class="repeated-card-item">\n                <div class="card">\n                    <div id="card_header">\n                        <div id="subcategory">\n                            {{item.skuDetails.subcategory}}\n                        </div>\n                        <div id="brand">\n                            {{item.skuDetails.brand}}\n                        </div>\n                    </div>\n                    <div id="middle_content">\n                        <div class="row">\n                            <span>Category : </span>\n                            <span>{{item.skuDetails.category}}</span>\n                        </div>\n                        <div ng-repeat="(key, value) in item.skuDetails.otherProperties" class="row">\n                            <span>{{key}} : </span>\n                            <span>{{value}}</span>\n                        </div>\n                        <div class="row">\n                            <span>Quantity : </span>\n                            <span>{{item.qty}}{{item.uom}}</span>\n                        </div>\n                    </div>\n                    <div id="bottom_content">\n                        <div id="price">{{item.price}}</div>\n                        <div id="add_to_cart" ng-click="addToCart(item)">Add to cart</div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>');
+$templateCache.put('registerframeview.html','<!DOCTYPE html>\r\n<!--\r\nThis file is property of Power2SME pvt. ltd.\r\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\r\n@Date :\r\n@FileName For Reference :\r\n@Purpose : \r\n@Other Description :\r\n-->\r\n<td style="height: 480px;"> \r\n    <div class="chatmsg message-box-container-bot">\r\n        <img class="welcome-user-icon" ng-src="{{getBotIconUrl()}}">\r\n        <div>\r\n            <b>PICS</b><br/>\r\n            <small>Virtual Assistant Agent</small>\r\n        </div>\r\n    </div>\r\n<md-content id="content" style="height:160px; width: 100%;">\r\n    <div class="chatmsg message-box-container-bot">\r\n        <img class="user-icon" ng-src="{{getBotIconUrl()}}">\r\n        <div>\r\n            Hello, How can I help you ?\r\n        </div>\r\n    </div>\r\n    <div class="chatmsg message-box-container-bot">\r\n        <img class="user-icon" ng-src="{{getBotIconUrl()}}">\r\n        <div>\r\n            Please provide your mobile number to start with.\r\n        </div>\r\n    </div>\r\n    <!-- -->\r\n    <div>\r\n        <div ng-repeat="msg in phoneValidationMessageList track by $index" class="chatmsg message-box-container-bot">\r\n            <img class="user-icon" ng-src="{{getBotIconUrl()}}">\r\n        <div id="{{$index}}">\r\n            {{msg}}\r\n        </div>\r\n        </div>\r\n    </div>\r\n</md-content>\r\n<div id="welcome-sign-up-container">\r\n    <md-input-container class="md-block">            \r\n        <label>Contact Number</label>            \r\n        <input id="mobilenumber" ng-model="userdetail.phone" required="" my-enter="sign_up_submit()">\r\n    </md-input-container>\r\n    <div>\r\n        <md-button id="chat_now_button" class="md-raised md-primary md-hue-2 start_chat" ng-click="sign_up_submit()">START CHAT</md-button>\r\n    </div>\r\n</div>\r\n</td>');
+$templateCache.put('sendmessageboxview.html','<!--\r\nThis file is property of Power2SME pvt. ltd.\r\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\r\n@Date :\r\n@FileName For Reference :\r\n@Purpose : \r\n@Other Description :\r\n-->\r\n<div class="bottom-bar-container">\r\n    <div class="suggestion-bar-container">\r\n        <md-virtual-repeat-container id="horizontal-container" class="horizontal-container" md-orient-horizontal>\r\n            <div md-virtual-repeat="item in suggestionList"\r\n                 class="repeated-item" >\r\n                <div class ="chip" ng-click="choose($index, -1)">\r\n                    {{item}}\r\n                </div>\r\n            </div>\r\n        </md-virtual-repeat-container>\r\n    </div>\r\n    <table ng-show="isProgressInActive" class="write-box-table" >\r\n        <tr>\r\n            <td  style="height: 48px;width:100%;">\r\n                <!--                <input id="input" class="input_box" type="text"/>-->\r\n        <md-input-container class="send-message-input-box md-block" md-is-error="validateText()" md-no-float>\r\n            <textarea id="input" ng-model="message.text" max-rows="3" md-maxlength="getMaxTextBoxLength()" class="input-box" type="text" placeholder="Type your message ..." my-enter="send()" ctrl-enter>\r\n            </textarea>\r\n        </md-input-container>\r\n        </td>\r\n        <td class="chat_send_button_td" ng-click="send();" >\r\n\r\n        <md-toolbar class="md-primary md-hue-2 send-icon chat-send-button"><md-icon>send</md-icon></md-toolbar>\r\n        </td>\r\n        </tr>\r\n    </table>\r\n</div>');
+$templateCache.put('suggestionview.html','<!DOCTYPE html>\r\n<!--\r\nThis file is property of Power2SME pvt. ltd.\r\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\r\n@Date :\r\n@FileName For Reference :\r\n@Purpose : \r\n@Other Description :\r\n-->\r\n<div>\r\n        <div>TODO write content</div>\r\n</div>\r\n');
+$templateCache.put('welcomeframeview.html','<!DOCTYPE html>\r\n<!--\r\nThis file is property of Power2SME pvt. ltd.\r\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\r\n@Date :\r\n@FileName For Reference :\r\n@Purpose : \r\n@Other Description :\r\n-->\r\n<div style="height:480px;">\r\n    <div class="chatmsg message-box-container-bot intro-bubble">\r\n        <img class="welcome-user-icon" ng-src="{{getBotIconUrl()}}">\r\n        <div>\r\n            <b>PICS</b><br/>\r\n            <small>Virtual Assistant Agent</small>\r\n        </div>\r\n    </div>\r\n    <div class="chatmsg message-box-container-bot ">\r\n        <img class="user-icon" ng-src="{{getBotIconUrl()}}">\r\n        <div class="white-bubble">\r\n            Hello, How can I help you ?\r\n        </div>\r\n    </div>\r\n    <div id="welcome-chatnow-container">\r\n        <md-button id="chat_now_button" class="md-raised md-primary md-hue-2" ng-click="nextChatViewStage();">CHAT NOW</md-button>\r\n    </div>            \r\n</div>');
+$templateCache.put('chatview.html','<!DOCTYPE html>\r\n<!--\r\nThis file is property of Power2SME pvt. ltd.\r\n@author(developer) : Himanshu Shekhar (himanshushekhar002@gmail.com)\r\n@Date :\r\n@FileName For Reference :\r\n@Purpose : \r\n@Other Description :\r\n-->\r\n\r\n<div ng-controller="ChatUIController" id="main_container" class="main-container">\r\n    <table class="main-table" >\r\n        <tr>\r\n            <td class="mouse-hand">\r\n        <md-toolbar class="md-primary md-hue-2 chat-header" md-ink-ripple="#FFFFFF">\r\n            <div layout="row" layout-align="space-between stretch">\r\n                <div ng-if="getChatViewState()" class="md-toolbar-tools layout-padding-left remove-border" flex="33">\r\n                    <div class="chat-header-switch">ChatBot</div>\r\n                    <md-switch ng-disabled="true" ng-model="switchValue" ng-change="switchValueChanged()" class="md-accent md-hue-1 chat-header-switch" aria-label="autochat">\r\n                        Agent\r\n                    </md-switch>\r\n                </div>\r\n                <div ng-if="!getChatViewState()" ng-click="changeChatViewState()" class="md-toolbar-tools chat-header-title remove-border" flex="33">\r\n                    {{getChatWindowTitle()}}\r\n                </div>                \r\n                <div class="md-toolbar-tools remove-border" ng-click="changeChatViewState()" flex="66">\r\n                        <div flex="95"></div>\r\n                        <md-icon ng-if="!getChatViewState()">expand_less</md-icon>\r\n                        <md-icon ng-if="getChatViewState()">expand_more</md-icon>\r\n                </div>\r\n            </div>\r\n        </md-toolbar>\r\n        <md-progress-linear md-mode="indeterminate" ng-disabled="isProgressInActive"></md-progress-linear>\r\n        </td>\r\n        </tr>\r\n        <tr class="" ng-show="chat_view_stage==1">\r\n            <td>\r\n<!--                <div ng-include="getWelcomeFrame()"></div>-->\r\n                <welcome-frame></welcome-frame>\r\n            </td>\r\n        </tr>\r\n        <tr ng-show="chat_view_stage==2">\r\n            <td>\r\n<!--                <div ng-include="getRegisterFrame()"></div>-->\r\n                <register-frame></register-frame>\r\n            </td>\r\n        </tr>\r\n        <tr class="chat-view-tr" ng-show="chat_view_stage==3">\r\n            <td>\r\n                    <div class="chat-view" id="chat_view" chat-frame></div>\r\n            </td>\r\n        </tr>\r\n        <tr ng-show="chat_view_stage==3">\r\n            <td>\r\n<!--                <div ng-include="getSendMessageFrame()"></div>-->\r\n                    <sendmessage-frame></sendmessage-frame>\r\n            </td>\r\n        </tr>    \r\n    </table>\r\n</div>\r\n');}]);

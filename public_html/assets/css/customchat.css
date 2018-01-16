@@ -26,6 +26,7 @@ and open the template in the editor.
     width: 100%;
     border-collapse:collapse;
     table-layout: fixed;
+    background: url('../../img/back.png') repeat;
 }
 .main-table th,td{
     padding:0px;
@@ -39,6 +40,7 @@ and open the template in the editor.
     width: 100%;
     border-collapse:collapse;
     border-top: 1px solid #cccccc;
+    background: #fff;
 }
 .write-box-table th,td{
     padding:0px;
@@ -55,7 +57,7 @@ and open the template in the editor.
 }
 
 .chat-view .repeated-item2 {
-    background-color:#EEEEEE;
+/*    background-color:#EEEEEE;*/
 }
 .chat-view-tr{
     height: 100%;
@@ -182,8 +184,8 @@ md-input-container .md-errors-spacer {
     color: darkgray !important;
 }
 .message-box-container-bot{
-    padding-top:16px;
-    padding-bottom:12px;
+    padding-top:15px;
+    padding-bottom:0px;
     padding-right: 48px;
     color:#424242;
     display:flex;
@@ -192,14 +194,16 @@ md-input-container .md-errors-spacer {
     align-items: center;
     word-break: break-word;
 }
+.repeated-item2:last-child{padding-bottom: 15px;}
+
 .message-box-container-client{
-    padding-top:16px;
-    padding-bottom:16px;
+    padding-top:15px;
+/*    padding-bottom:15px;*/
     padding-left: 48px;
     display:flex;
     flex-direction:row-reverse;
     /*  background-color:#90CAF9;*/
-    background-color:snow;
+/*    background-color:snow;*/
     font-size: 0.9em;
     align-items: center;
 }
@@ -342,8 +346,8 @@ md-input-container .md-errors-spacer {
 .welcome-user-icon{
     margin-left:8px;
     margin-right:8px;
-    height: 100px;
-    width: 100px;
+    height: 75px;
+    width: 75px;
     flex-shrink: 0;
     border-radius: 11px;
 }
@@ -363,16 +367,37 @@ md-input-container .md-errors-spacer {
   margin:auto;
 */
   padding:0px 4px;
-  position: relative;
+  position: absolute;
     bottom: 0px;
 }
 
 #welcome-chatnow-container{
-  width:100%;  
+  width:97%;  
 /*  height:80%;
   margin:auto;
 */
   padding:0px 19px;
-  position: relative;
-    bottom: -199px;
+  position: absolute;
+  bottom: 0px;
 }
+
+.intro-bubble{background:#f3f9fd;    padding-bottom: 15px;}
+.white-bubble{background:#fff; border-radius:10px; width: max-content; padding: 15px;}
+/*.white-bubble:before {
+    content:"\A";
+    border-style: solid;
+    border-width: 10px 15px 10px 0;
+    border-color: transparent #fff transparent transparent;
+    position: relative;
+    left: 35px;
+}*/
+.blue-bubble{background:#369fdf; border-radius:10px; width: max-content; padding: 15px; color:#fff;}
+/*.blue-bubble:after{
+    content:"\A";
+    border-style: solid;
+    border-width: 10px 0px 10px 15px;
+    border-color: transparent transparent transparent #369fdf ;
+    position: relative;
+    right: 35px;
+}*/
+.contact-details{background: #f4f9fd; padding: 0px 20px 0px 20px; width: 75%; margin: 0 auto; border-radius: 10px; border: 1px solid #c2d8ee; margin-bottom: 15px;}

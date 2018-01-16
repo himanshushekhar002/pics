@@ -10,7 +10,7 @@
 var power2smeChat = angular.module("app.pics");
 
 /*
- * This directive helps in main chat conversation window auo scrolling
+ * This directive helps in main chat conversation window auto scrolling
  */
 power2smeChat.directive('schrollBottom', function () {
     return {
