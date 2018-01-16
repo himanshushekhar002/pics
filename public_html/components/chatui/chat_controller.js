@@ -241,7 +241,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             setHeight: 384,
             scrollInertia: 1200,
             axis: 'y' // enable 2 axis scrollbars by default : 'yx'
-        }
+        };
            
 
         $scope.sendEventToGA = function (eventname) {
@@ -285,11 +285,17 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         function callServices() {
         }//callServices end
 
-        function autoScrollChatMessageList(){
-            $timeout(function(){
+        function autoScrollChatMessageList(who){
+            console.log(who+' : '+$scope.config.scrollInertia);
+            $timeout(function(who){
+                if(who=='client'){
+                    $scope.config.scrollInertia = 0;
+                }
                 //scrollBarUpdate is function name declared in attribute
                 // of ng-scrollbar-update used on chat view
                 $scope.scrollBarUpdate('scrollTo','bottom');
+                
+                $scope.config.scrollInertia = 1200;
             });
         }
 
@@ -339,7 +345,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 generateTypingResponse();
             }
             //scroll to bottom after generating chat msg
-            autoScrollChatMessageList();
+            autoScrollChatMessageList(who);
         }
 
         /*
