@@ -536,6 +536,22 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             autoHideScrollbar: true
         }
 
+        
+        $scope.sendEventToGA = function (eventname) {
+            var objectname = 'CHAT'; 
+            var pageUrl = window.location.pathname + '#!' + $location.path();
+            if (PROPERTIES.HISTORY_API_ON) {
+                pageUrl = $location.path();
+            } else {
+                pageUrl = window.location.pathname + '#!' + $location.path();
+            }
+            if(angular.isDefined($window.ga)){
+                $window.ga('send', 'event', objectname, eventname, pageUrl);
+            }else{
+                $scope.showAlert('Chat Window WARNING : GA Library not included ! ', '<i>Please follow https://developers.google.com/analytics/devguides/collection/analyticsjs/events</i>');
+            }
+        };
+        
         /*#######################################*/
 
         /*INITIALIZES CONTROLLER*/
