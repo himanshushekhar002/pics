@@ -25,7 +25,8 @@
            "angular": "~1.5.9",
            "angular-sanitize":"~1.5.9",
            "angular/angular-aria": "~1.5.9",
-           "flesler/jquery.scrollTo": "~2.1.2"
+           "flesler/jquery.scrollTo": "~2.1.2",
+           "iominh/ng-scrollbars": "~0.0.11"
            },
   "resolutions": {
       "angular": "1.5.9"
