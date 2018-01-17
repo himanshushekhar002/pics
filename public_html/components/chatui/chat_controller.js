@@ -12,7 +12,7 @@ var app = angular.module("app.pics");
 
 app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', '$mdDialog', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location, $mdDialog, ChatServices) {
         /*PRIVATE VARIABLES*/
-        var chat_view_state = true;
+        var chat_view_state = false;
         var req_que = 0; // This will keep record of number of messages client has sent which are still pending for response.
         var chatWindowTitle = 'Chat';
         var chatid = 0;
@@ -46,6 +46,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         var scrollToLibraryInclusionWarning = true;
 
         /*PUBLIC VARIABLES :: TWO WAY BINDERS*/
+        $scope.mesmerize = false;
         $scope.queryResponse = "";
         $scope.chatMessageList = [];
         $scope.phoneValidationMessageList = [];
@@ -61,7 +62,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         };
         $scope.message = {
             text: ''
-        };
+        };        
 
         /*PUBLIC FUNCTIONS*/
 
@@ -155,6 +156,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
          * from minimize to maximize and vice-versa
          */
         $scope.changeChatViewState = function () {
+            $scope.mesmerize = false;
             if (chat_view_state == false) {
                 chat_view_state = true;
                 //document.getElementById('main_container').style.height = '480px';
@@ -239,7 +241,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 updateOnContentResize: true                
             },
             setHeight: 384,
-            scrollInertia: 1200,
+            scrollInertia: 2000,
             axis: 'y' // enable 2 axis scrollbars by default : 'yx'
         };
            
@@ -275,28 +277,32 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 initChangeViewState();
             }, 2000);
         }
+        
 
         function initChangeViewState() {
-            if (chat_view_state == true) {
-                $scope.changeChatViewState();
-                $scope.changeChatViewState();
-            }
+//            if (chat_view_state == true) {
+//                $scope.changeChatViewState();
+//                $scope.changeChatViewState();
+//            }
+                  $scope.mesmerize = true;
         }
         function callServices() {
         }//callServices end
 
-        function autoScrollChatMessageList(who){
-            console.log(who+' : '+$scope.config.scrollInertia);
+        function autoScrollChatMessageList(who){            
             $timeout(function(who){
-                if(who=='client'){
-                    $scope.config.scrollInertia = 0;
+                var dynamicScrollInertia = $scope.config.scrollInertia;
+                if(who === 'client'){
+                    dynamicScrollInertia = 0;
                 }
+                console.log(who+' : '+$scope.config.scrollInertia);
                 //scrollBarUpdate is function name declared in attribute
                 // of ng-scrollbar-update used on chat view
-                $scope.scrollBarUpdate('scrollTo','bottom');
-                
-                $scope.config.scrollInertia = 1200;
-            });
+                $scope.scrollBarUpdate('scrollTo','bottom',{
+                    scrollInertia:dynamicScrollInertia,
+                    scrollEasing:"easeInOut"
+                    });               
+            },0,true,who);
         }
 
         /*

@@ -123,6 +123,12 @@ power2smeChat.directive('sendmessageFrame', function () {
         templateUrl: 'sendmessageboxview.html'
     };
 });
+
+power2smeChat.directive('mesmerizeFrame', function () {
+    return {
+        templateUrl: 'mesmerizeview.html'
+    };
+});
 //-------------------------------------------------------------------------------
 
 
