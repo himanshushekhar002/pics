@@ -7,61 +7,64 @@ This file is property of Power2SME pvt. ltd.
 @Purpose : 
 @Other Description :
 -->
+<div ng-controller="ChatUIController">
+    <div ng-show="mesmerize">
+        <mesmerize-frame class="mesmerize"></mesmerize-frame>
+    </div>
+    <div ng-show="chatminimized" ng-click="maximizeChat()">
+        <button>CLICK ME</button>
+    </div>
 
-<div ng-controller="ChatUIController" id="main_container" class="main-container">
-    <table class="main-table" >
-        <tr ng-show="mesmerize">
-            <td>
-                <mesmerize-frame class="mesmerize"></mesmerize-frame>
-            </td>
-        </tr>
-        <tr>
-            <td class="mouse-hand">
-        <md-toolbar class="md-primary md-hue-2 chat-header" md-ink-ripple="#FFFFFF">
-            <div layout="row" layout-align="space-between stretch">
-                <div ng-if="getChatViewState()" class="md-toolbar-tools layout-padding-left remove-border" flex="33">
-                    <div class="chat-header-switch">ChatBot</div>
-                    <md-switch ng-disabled="true" ng-model="switchValue" ng-change="switchValueChanged()" class="md-accent md-hue-1 chat-header-switch" aria-label="autochat">
-                        Agent
-                    </md-switch>
-                </div>
-                <div ng-if="!getChatViewState()" ng-click="changeChatViewState()" class="md-toolbar-tools chat-header-title remove-border" flex="33">
-                    {{getChatWindowTitle()}}
-                </div>                
-                <div class="md-toolbar-tools remove-border" ng-click="changeChatViewState()" flex="66">
+    <div ng-show="!chatminimized" id="main_container" class="main-container">
+        <table class="main-table" >
+            <tr>
+                <td class="mouse-hand">
+                <md-toolbar class="md-primary md-hue-2 chat-header" md-ink-ripple="#FFFFFF">
+                <div layout="row" layout-align="space-between stretch">
+                    <div ng-if="getChatViewState()" class="md-toolbar-tools layout-padding-left remove-border" flex="33">
+                        <div class="chat-header-switch">ChatBot</div>
+                        <md-switch ng-disabled="true" ng-model="switchValue" ng-change="switchValueChanged()" class="md-accent md-hue-1 chat-header-switch" aria-label="autochat">
+                            Agent
+                        </md-switch>
+                    </div>
+                    <div ng-if="!getChatViewState()" ng-click="minimizeChat()" class="md-toolbar-tools chat-header-title remove-border" flex="33">
+                        {{getChatWindowTitle()}}
+                    </div>                
+                    <div class="md-toolbar-tools remove-border" ng-click="changeChatViewState()" flex="66">
                         <div flex="95"></div>
                         <md-icon ng-if="!getChatViewState()">expand_less</md-icon>
                         <md-icon ng-if="getChatViewState()">expand_more</md-icon>
+                    </div>
                 </div>
-            </div>
-        </md-toolbar>
-        <md-progress-linear md-mode="indeterminate" ng-disabled="isProgressInActive"></md-progress-linear>
-        </td>
-        </tr>
-        <tr class="" ng-show="chat_view_stage==1">
-            <td>
-<!--                <div ng-include="getWelcomeFrame()"></div>-->
-                <welcome-frame></welcome-frame>
+            </md-toolbar>
+            <md-progress-linear md-mode="indeterminate" ng-disabled="isProgressInActive"></md-progress-linear>
             </td>
-        </tr>
-        <tr ng-show="chat_view_stage==2">
-            <td>
-<!--                <div ng-include="getRegisterFrame()"></div>-->
-                <register-frame></register-frame>
+            </tr>
+            <tr class="" ng-show="chat_view_stage == 1">
+                <td>
+                    <!--                <div ng-include="getWelcomeFrame()"></div>-->
+            <welcome-frame></welcome-frame>
             </td>
-        </tr>
-        <tr class="chat-view-tr" ng-show="chat_view_stage==3">
-            <td>
-                <div ng-scrollbars ng-scrollbars-update="scrollBarUpdate" ng-scrollbars-config="config">
-                      <div class="chat-view" id="chat_view" chat-frame></div>
-                </div>
+            </tr>
+            <tr ng-show="chat_view_stage == 2">
+                <td>
+                    <!--                <div ng-include="getRegisterFrame()"></div>-->
+            <register-frame></register-frame>
             </td>
-        </tr>
-        <tr ng-show="chat_view_stage==3">
-            <td>
-<!--                <div ng-include="getSendMessageFrame()"></div>-->
-                    <sendmessage-frame></sendmessage-frame>
+            </tr>
+            <tr class="chat-view-tr" ng-show="chat_view_stage == 3">
+                <td>
+                    <div ng-scrollbars ng-scrollbars-update="scrollBarUpdate" ng-scrollbars-config="config">
+                        <div class="chat-view" id="chat_view" chat-frame></div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="chat_view_stage == 3">
+                <td>
+                    <!--                <div ng-include="getSendMessageFrame()"></div>-->
+            <sendmessage-frame></sendmessage-frame>
             </td>
-        </tr>    
-    </table>
+            </tr>    
+        </table>
+    </div>
 </div>

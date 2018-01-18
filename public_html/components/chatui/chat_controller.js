@@ -47,6 +47,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
 
         /*PUBLIC VARIABLES :: TWO WAY BINDERS*/
         $scope.mesmerize = false;
+        $scope.chatminimized = true;
         $scope.queryResponse = "";
         $scope.chatMessageList = [];
         $scope.phoneValidationMessageList = [];
@@ -150,6 +151,14 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         $scope.getChatViewState = function () {
             return chat_view_state;
         };
+
+        $scope.maximizeChat = function(){
+            $scope.chatminimized = false;
+        }
+        
+        $scope.minimizeChat = function(){
+            $scope.chatminimized = true;
+        }
 
         /*
          * Change Chat View state
@@ -271,10 +280,10 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             //callServices();
             //processForApiRequest('Hi');
             $timeout(function () {
+                initChangeViewState();
                 $scope.userdetail.phone = $scope.phone;
                 $scope.userdetail.name = $scope.name;
                 $scope.userdetail.email = $scope.email;
-                initChangeViewState();
             }, 2000);
         }
         
