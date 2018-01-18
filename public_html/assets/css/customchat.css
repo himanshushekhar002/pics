@@ -402,16 +402,27 @@ md-input-container .md-errors-spacer {
 }*/
 .contact-details{background: #f4f9fd; padding: 0px 20px 0px 20px; width: 75%; margin: 0 auto; border-radius: 10px; border: 1px solid #c2d8ee; margin-bottom: 15px;}
 
-.mesmerize{
-    position: fixed;
-    bottom: 36px;
+.mesmerize {
+    position: absolute;
+    bottom: 7px;
+    right: 107px;
+    height: 109px;
+    width: 329px;
 }
+
+.minmized-chat{
+    position: absolute;
+    bottom: 36px;
+    right: 40px;
+    height: 45px;
+}
+
 /*  ------ BY HIMANSHU----------------- */
 
-@-moz-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Firefox */
-@-webkit-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Webkit */
-@-ms-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* IE */
-@keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Opera and prob css3 final iteration */
+@-moz-keyframes blink {0%{opacity:1;} 50%{opacity:0.5;} 100%{opacity:1;}} /* Firefox */
+@-webkit-keyframes blink {0%{opacity:1;} 50%{opacity:0.5;} 100%{opacity:1;}} /* Webkit */
+@-ms-keyframes blink {0%{opacity:1;} 50%{opacity:0.5;} 100%{opacity:1;}} /* IE */
+@keyframes blink {0%{opacity:1;} 50%{opacity:0.5;} 100%{opacity:1;}} /* Opera and prob css3 final iteration */
 .img-blink {
     -moz-transition:all 1s ease-in-out;
     -webkit-transition:all 1s ease-in-out;
@@ -425,9 +436,6 @@ md-input-container .md-errors-spacer {
     animation:blink normal 2s infinite ease-in-out; /* Opera and prob css3 final iteration */
 }​
 
-.mesmerize{
-    position: fixed;
-    bottom: 36px;
-}
+.dummy{}
 
 /* ------------------------------------ */

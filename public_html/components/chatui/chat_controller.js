@@ -13,8 +13,9 @@ var app = angular.module("app.pics");
 app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '$anchorScroll', '$compile', '$filter', '$location', '$mdDialog', 'ChatServices', function ($scope, $log, $timeout, $interval, $anchorScroll, $compile, $filter, $location, $mdDialog, ChatServices) {
         /*PRIVATE VARIABLES*/
         var chat_view_state = false;
+        var minimizeChat = true; // variable which will keep chat state. minimizeChat===true ? minimized : maximized
         var req_que = 0; // This will keep record of number of messages client has sent which are still pending for response.
-        var chatWindowTitle = 'Chat';
+        var chatWindowTitle = 'Chat'; //Title to appear on chat windo
         var chatid = 0;
         //var typingResponseActive = false;
         var lastMessageId = '';//This will contain last message id retrieved for agent
@@ -47,7 +48,6 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
 
         /*PUBLIC VARIABLES :: TWO WAY BINDERS*/
         $scope.mesmerize = false;
-        $scope.chatminimized = true;
         $scope.queryResponse = "";
         $scope.chatMessageList = [];
         $scope.phoneValidationMessageList = [];
@@ -63,7 +63,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         };
         $scope.message = {
             text: ''
-        };        
+        };
 
         /*PUBLIC FUNCTIONS*/
 
@@ -152,21 +152,47 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             return chat_view_state;
         };
 
-        $scope.maximizeChat = function(){
-            $scope.chatminimized = false;
-        }
         
-        $scope.minimizeChat = function(){
-            $scope.chatminimized = true;
-        }
-
         /*
          * Change Chat View state
-         * from minimize to maximize and vice-versa
+         * from minimize to maximize
          */
-        $scope.changeChatViewState = function () {
+        $scope.maximizeChat = function () {
             $scope.mesmerize = false;
-            if (chat_view_state == false) {
+            minimizeChat = false;
+            $timeout(function () {
+                jQuery('#main_container').animate({height: '480px', width: '300px'}, 350, 'swing', function () {
+                    //alert("Finished animating");                    
+                });
+                jQuery('#chat_header_control_icon').attr('src', 'img/window_minimize.png');
+            });
+            if (chatid == null) {
+                getChatId();
+            }
+        };
+
+        
+        /*
+         * Change Chat View state
+         * from maximize to minimize
+         */
+        $scope.minimizeChat = function () {
+            $timeout(function () {
+                jQuery('#main_container').animate({height: '45px', width: '300px'}, 350, 'swing', function () {
+                    //alert("Finished animating");                    
+                    jQuery('#chat_header_control_icon').attr('src', 'img/window_maximize.png');
+                    $timeout(function(){minimizeChat = true;});
+                });                
+            });
+        };
+
+        $scope.isChatMinimized = function () {
+            return minimizeChat;
+        };
+
+        
+        $scope.changeChatViewState = function () {            
+            if (chat_view_state === false) {
                 chat_view_state = true;
                 //document.getElementById('main_container').style.height = '480px';
                 jQuery('#main_container').animate({height: '480px', width: '300px'}, 350, 'swing', function () {
@@ -247,13 +273,13 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             autoHideScrollbar: false,
             theme: 'minimal-dark',
             advanced: {
-                updateOnContentResize: true                
+                updateOnContentResize: true
             },
             setHeight: 384,
             scrollInertia: 2000,
             axis: 'y' // enable 2 axis scrollbars by default : 'yx'
         };
-           
+
 
         $scope.sendEventToGA = function (eventname) {
             var objectname = 'CHAT';
@@ -286,32 +312,32 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 $scope.userdetail.email = $scope.email;
             }, 2000);
         }
-        
+
 
         function initChangeViewState() {
 //            if (chat_view_state == true) {
 //                $scope.changeChatViewState();
 //                $scope.changeChatViewState();
 //            }
-                  $scope.mesmerize = true;
+            $scope.mesmerize = true;
         }
         function callServices() {
         }//callServices end
 
-        function autoScrollChatMessageList(who){            
-            $timeout(function(who){
+        function autoScrollChatMessageList(who) {
+            $timeout(function (who) {
                 var dynamicScrollInertia = $scope.config.scrollInertia;
-                if(who === 'client'){
+                if (who === 'client') {
                     dynamicScrollInertia = 0;
                 }
-                console.log(who+' : '+$scope.config.scrollInertia);
+                console.log(who + ' : ' + $scope.config.scrollInertia);
                 //scrollBarUpdate is function name declared in attribute
                 // of ng-scrollbar-update used on chat view
-                $scope.scrollBarUpdate('scrollTo','bottom',{
-                    scrollInertia:dynamicScrollInertia,
-                    scrollEasing:"easeInOut"
-                    });               
-            },0,true,who);
+                $scope.scrollBarUpdate('scrollTo', 'bottom', {
+                    scrollInertia: dynamicScrollInertia,
+                    scrollEasing: "easeInOut"
+                });
+            }, 0, true, who);
         }
 
         /*
@@ -490,7 +516,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
          * This method will process response 
          * got from backend
          */
-        function processForResponse(data) {            
+        function processForResponse(data) {
             console.log('inside data processing');
             var msg = '';
             var msgs = [];
@@ -548,7 +574,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 console.log(e);
                 msg = '';
                 generateChatMessage(msg, $scope.activeagent, true, null, false);
-            }                        
+            }
         }
 
         function convertUrlToHref(msg) {
