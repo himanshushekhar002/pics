@@ -64,7 +64,7 @@ function templateToJs(){
     .pipe(templateCache('templates.js',{
         standalone : true  
     }))
-            .pipe(gulp.dest('public_html/dist/'));
+            .pipe(gulp.dest('dist/'));
 }
 
 function moveCopyOfDistToPublic(){
