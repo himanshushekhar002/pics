@@ -26,7 +26,8 @@ and open the template in the editor.
     width: 100%;
     border-collapse:collapse;
     table-layout: fixed;
-    background: url('../../img/back.png') repeat;
+/*    background: url('../../img/back.png') repeat; */
+    background: url(https://github.com/himanshushekhar002/pics/blob/master/public_html/img/back.png?raw=true) repeat;
 }
 .main-table th,td{
     padding:0px;
