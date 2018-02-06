@@ -192,6 +192,22 @@ power2smeChat.directive('ctrlEnter', function () {
     };
 });
 
+power2smeChat.directive('draggable', function() {
+    return {
+        // A = attribute, E = Element, C = Class and M = HTML Comment
+        restrict: 'A',
+        //The link function is responsible for registering DOM listeners as well as updating the DOM.
+        link: function(scope, element, attrs) {
+            element.draggable({
+                stop: function(event, ui) {
+                    console.log("Check if its printing");
+                    event.stopPropagation();
+                }
+            });
+        }
+    };
+});
+
 power2smeChat.directive('bindHtmlCompile', ['$compile', function ($compile) {
         return {
             restrict: 'A',
@@ -608,8 +624,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 $scope.userdetail.email = $scope.email;
             }, 2000);
         }
-
-
+        
         function initMesmerizeView() {
             $scope.mesmerize = true;
         }

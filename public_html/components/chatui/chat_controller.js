@@ -310,8 +310,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
                 $scope.userdetail.email = $scope.email;
             }, 2000);
         }
-
-
+        
         function initMesmerizeView() {
             $scope.mesmerize = true;
         }
