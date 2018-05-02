@@ -275,7 +275,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             advanced: {
                 updateOnContentResize: true
             },
-            setHeight: 384,
+            setHeight: 380,
             scrollInertia: 2000,
             axis: 'y' // enable 2 axis scrollbars by default : 'yx'
         };

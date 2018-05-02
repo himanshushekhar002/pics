@@ -11,7 +11,8 @@ app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
         //var BASE_DOMAIN = 'http://125.63.66.69/';
         //var BASE_DOMAIN = 'http://localhost:8085/';
         //var BASE_DOMAIN = 'http://192.168.0.186:8085';
-        var BASE_DOMAIN = 'https://uat.power2sme.com/';
+        //var BASE_DOMAIN = 'https://uat.power2sme.com/';
+        var BASE_DOMAIN = 'https://www.power2sme.com/';
         var CONTEXT_WEBSITE = 'website/';
         var CONTEXT_P2SAPI = 'p2sapi/';
         //var CONTEXT_CHATAPI = 'chatapi/';
@@ -75,16 +76,3 @@ app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
             };
         };
     }]);
-/*
- * {
- * "firstname":"Shubh",
- * "lastname":"Singh",
- * "mobilenumber":"9450430617",
- * "emailid":"shubh.aug@mailinator.com",
- * "smeid":null,
- * "errorfirstname":false,
- * "errorlastname":false,
- * "errormobilenumber":false,
- * "erroremailid":false
- * }
- */
