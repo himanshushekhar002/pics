@@ -54,7 +54,7 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
         $scope.activeagent = 'bot';//bot or human
         $scope.switchValue = false;
         $scope.chatviewactive = false;
-        $scope.chat_view_stage = 1;//1 : welcome, 2 : register, 3 : chat
+        $scope.chat_view_stage = 2;//1 : welcome, 2 : register, 3 : chat
         $scope.isProgressInActive = true;
         $scope.userdetail = {
             email: '',
