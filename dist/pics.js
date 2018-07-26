@@ -232,14 +232,15 @@ power2smeChat.directive('bindHtmlCompile', ['$compile', function ($compile) {
 var app = angular.module('app.pics');
 app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
 
-        //var BASE_DOMAIN = 'http://192.168.1.25:7070/';
-        //var BASE_DOMAIN = 'http://localhost:8085/';        
+        //var BASE_DOMAIN = 'http://125.63.66.69/';
+        //var BASE_DOMAIN = 'http://localhost:7979/';        
         //var BASE_DOMAIN = 'https://uat.power2sme.com/';
         //var BASE_DOMAIN = 'https://ebf.power2sme.com/';
-        var BASE_DOMAIN = 'https://www.power2sme.com/';
+        //var BASE_DOMAIN = 'https://www.power2sme.com/';
+        var BASE_DOMAIN = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+'/';
         var CONTEXT_WEBSITE = 'website/';
         var CONTEXT_P2SAPI = 'p2sapi/';
-        //var CONTEXT_CHATAPI = 'chatapi/';
+        //var CONTEXT_CHATAPI = '';
         var CONTEXT_CHATAPI = 'chatai/';
         var p2sapiusername = 'dev';
         var p2sapipassword = 'developer';
@@ -282,12 +283,14 @@ app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
                 emailid : email
             };
             return {
-                promise: $http.post('https://uat.power2sme.com/website/public/rfq/usercontact',user),
+                promise: $http.post(BASE_DOMAIN+'website/public/rfq/usercontact',user),
+                //promise: $http.post('https://uat.power2sme.com/website/public/rfq/usercontact',user),
                 cancel: canceller
             };
         };
         
-        this.registerContact = function (namefirst,namelast,email,mobileNumber){            
+        this.registerContact = function (namefirst,namelast,email,mobileNumber){ 
+            console.log('BASE DOMAIN : '+BASE_DOMAIN);
             var canceller = $q.defer();
             var user={
                 name : namefirst+' '+namelast,
@@ -332,7 +335,9 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             'can you be more specific',
             'i cannot understand. can you be more specific.',
             'we are raw material supplier',
-            'for anything related to finance'
+            'for anything related to finance',
+            'I cannot understand. Please provide detailed information.',
+            'Can you be more specific?'
         ];
         var intervalStopId = null;
         var livechatTokenId = null;

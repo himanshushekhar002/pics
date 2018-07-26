@@ -30,7 +30,9 @@ app.controller("ChatUIController", ['$scope', '$log', '$timeout', '$interval', '
             'can you be more specific',
             'i cannot understand. can you be more specific.',
             'we are raw material supplier',
-            'for anything related to finance'
+            'for anything related to finance',
+            'I cannot understand. Please provide detailed information.',
+            'Can you be more specific?'
         ];
         var intervalStopId = null;
         var livechatTokenId = null;
