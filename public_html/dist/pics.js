@@ -232,10 +232,10 @@ power2smeChat.directive('bindHtmlCompile', ['$compile', function ($compile) {
 var app = angular.module('app.pics');
 app.service("ChatServices", ['$log', '$http', '$q', function ($log, $http, $q) {
 
-        //var BASE_DOMAIN = 'http://192.168.1.25:7070/';
+        var BASE_DOMAIN = 'http://192.168.1.25:7070/';
         //var BASE_DOMAIN = 'http://localhost:8085/';        
         //var BASE_DOMAIN = 'https://uat.power2sme.com/';
-        var BASE_DOMAIN = 'https://ebf.power2sme.com/';
+        //var BASE_DOMAIN = 'https://ebf.power2sme.com/';
         //var BASE_DOMAIN = 'https://www.power2sme.com/';
         var CONTEXT_WEBSITE = 'website/';
         var CONTEXT_P2SAPI = 'p2sapi/';
